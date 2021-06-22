@@ -1,5 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+<file>TasksList.qml</file>
+<file>TasksListDelegate.qml</file>
+<file>TitleBar.qml</file>
+<file>CheckedIndicator.qml</file>
+<file>InputContainer.qml</file>
+<file>InputRecord.qml</file>
+<file>PrimaryButton.qml</file>
+<file>Style.qml</file>
     </qresource>
 </RCC>
