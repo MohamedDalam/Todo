@@ -5,19 +5,20 @@ Item {
     implicitHeight: 40
     implicitWidth: 200
 
-    property var _model
-    readonly property int _btnX: ((_root.width / 2) - (btnNewTask.width / 2))
+    property int _btnX: ((_root.width / 2) - (btnNewTask.width / 2))
 
-    focus: true
+    signal append(string name)
+
     Keys.onEscapePressed : _root.state = "view"
 
     state: "view"
     function acceptRecord() {
         if(_root.state === "add") {
-            _root._model.append(inputRecord.isActive,inputRecord.text);
-            inputRecord.clearText();
+            _root.append(inputRecord.text)
+            _root.state = "view"
+        } else {
+            _root.state = "add"
         }
-        _root.state = _root.state === "view" ? "add" : "view";
     }
 
     InputRecord{
@@ -34,16 +35,29 @@ Item {
         text: "+ Add Task"
         onClicked: _root.acceptRecord()
     }
+
     states: [
         State {
             name: "view"
-            PropertyChanges { target: inputRecord; opacity: 0.0; textFiledWidth: 0}
+            PropertyChanges {
+                target: inputRecord
+                opacity: 0.0
+                textFiledWidth: 0
+                text: ""
+                focus: false
+            }
             PropertyChanges { target: btnNewTask; width: 180; height: 40; }
         },
         State {
             name: "add"
             PropertyChanges { target: btnNewTask; text: "+"; width: 30; height: 30; x: _root.width - btnNewTask.width - 20; }
-            PropertyChanges { target: inputRecord; opacity: 1.0; textFiledWidth: btnNewTask.x - 30}
+            PropertyChanges {
+                target: inputRecord
+                opacity: 1.0
+                textFiledWidth: btnNewTask.x - 30
+                text: ""
+                focus: true
+            }
         }
     ]
 
@@ -66,4 +80,3 @@ Item {
         }
     ]
 }
-

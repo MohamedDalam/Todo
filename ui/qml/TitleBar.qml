@@ -4,16 +4,14 @@ import QtQuick.Layouts 1.2
 
 Item{
     id: _root
-    property alias actualHeight: _root.height
     property date currentDate: new Date()
-    width: parent.width
 
     Rectangle{
         id:background
         anchors.fill: parent
         gradient: Gradient{
-            GradientStop {position: 0.0; color: style.primaryColorMain }
-            GradientStop {position: 1.0; color: style.primaryColorLight }
+            GradientStop {position: 0.0; color: Style.primaryColorMain }
+            GradientStop {position: 1.0; color: Style.primaryColorLight }
         }
         radius: 5
     }

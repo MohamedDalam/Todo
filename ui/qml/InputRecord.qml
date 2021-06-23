@@ -6,7 +6,7 @@ Item {
     id: _root
     anchors.fill: parent
 
-    property string text: textField.text
+    property alias text: textField.text
     property bool isActive: true
     property alias textFiledWidth: textFieldBack.width
     property alias textFiledPlaceHolderText: textField.placeholderText
@@ -40,12 +40,12 @@ Item {
         background: Rectangle{
             id:textFieldBack
             border.width: 1
-            border.color: style.primaryColorLight
+            border.color: Style.primaryColorLight
             radius: 5
         }
         cursorDelegate: Rectangle {
             visible: textField.cursorVisible
-            color: style.primaryColorMain
+            color: Style.primaryColorMain
             width: textField.cursorRectangle.width
         }
         width: textFiledWidth
@@ -53,8 +53,8 @@ Item {
         rightPadding: 10
         verticalAlignment : TextInput.AlignVCenter
         selectByMouse: true
-        placeholderTextColor:Qt.rgba(style.primaryColorLight.r, style.primaryColorLight.g,
-                                     style.primaryColorLight.b, 0.5)
+        placeholderTextColor:Qt.rgba(Style.primaryColorLight.r, Style.primaryColorLight.g,
+                                     Style.primaryColorLight.b, 0.5)
 
         onAccepted: _root.enterPressed()
     }
@@ -69,7 +69,7 @@ Item {
     //        State {
     //            name: "deActive"
     //            PropertyChanges {target: _root; isActive: false}
-    //            PropertyChanges { target: checkedIndicator; color: style.primaryColorMain }
+    //            PropertyChanges { target: checkedIndicator; color: Style.primaryColorMain }
     //        }
     //    ]
 }

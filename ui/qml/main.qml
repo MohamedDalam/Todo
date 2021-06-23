@@ -10,36 +10,30 @@ Window {
     visible: true
     color: "lightGray"
 
-    readonly property int taskheight: 40
-
     ModelTodo {
         id: modelTodo
     }
 
-    Style{
-        id: style
-    }
-
     ColumnLayout {
         id: listContainer
-        anchors.centerIn: parent
-        width: 400
-        height: 600
+        anchors.fill: parent
 
-        TitleBar{
-            actualHeight: 60
+        TitleBar {
+            height: 60
             Layout.fillWidth: true
         }
 
-        Rectangle{
+        Rectangle {
             id: listBackground
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: "white"
             radius: 5
-            state: "EmptyList"
 
-            TasksList{}
+            TasksList{
+                anchors.fill: parent
+                todoModel: modelTodo
+            }
 
             Text {
                 id: emptyHint
@@ -51,10 +45,12 @@ Window {
                 visible: modelTodo.count === 0 ? true : false
             }
         }
-        InputContainer{
+
+        InputContainer {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBottom | Qt.AlignVCenter
-            _model: modelTodo
+            Layout.bottomMargin: parent.spacing
+            onAppend: modelTodo.append(true, name);
         }
     }
 }

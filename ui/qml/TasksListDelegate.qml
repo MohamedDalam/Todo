@@ -8,29 +8,38 @@ Rectangle {
     color: "transparent"
     radius: 5
 
-    property int dropItemIndex:0
+    property int dropItemIndex: 0
     property alias text: description.text
     property alias descState: description.state
-    property ListView listView
     property Item dragParent
     property bool isActive
 
     signal activeStateChanged()
-    signal itemHover()
     signal removeClicked()
 
-    RowLayout{
+    MouseArea {
+        id: area
+        anchors.fill: parent
+        hoverEnabled: true
+        drag.target: _root
+        drag.onActiveChanged: _root.Drag.drop()
+        onClicked: {
+            _root.activeStateChanged()
+            _root.isActive = !_root.isActive
+        }
+    }
+
+    RowLayout {
         id: row
         anchors.fill: parent
-        Item{
+        spacing: 0
+
+        Item {
             id: descriptionContainer
             height: parent.height
-            width: description.width + 30
-            Layout.preferredWidth: descriptionContainer.width
-            Layout.preferredHeight: 40
-            state: isActive ? "active" : "deActive"
+            Layout.fillWidth: true
 
-            CheckedIndicator{
+            CheckedIndicator {
                 id:checkedIndicator
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -50,12 +59,14 @@ Rectangle {
             states: [
                 State {
                     name: "active"
+                    when: _root.isActive === true
                     PropertyChanges { target: checkedIndicator; color: "transparent" }
                     PropertyChanges { target: description; opacity: 1.0;  font.strikeout: false;}
                 },
                 State {
                     name: "deActive"
-                    PropertyChanges { target: checkedIndicator; color: style.primaryColorMain }
+                    when: _root.isActive === false
+                    PropertyChanges { target: checkedIndicator; color: Style.primaryColorMain }
                     PropertyChanges { target: description; opacity: 0.5;  font.strikeout: true;}
                 }
             ]
@@ -69,41 +80,30 @@ Rectangle {
             ]
         }
 
-        Rectangle {
+        Item {
             id: removeIcon
             Layout.alignment: Qt.AlignRight
-            Layout.rightMargin: 10
-            width: 16
-            height: 16
-            color: "transparent"
+            Layout.preferredWidth: parent.height
+            height: parent.height
+            visible: area.containsMouse && !area.drag.active
             Text {
                 id: name
                 anchors.centerIn: parent
+                verticalAlignment: Text.AlignVCenter
                 color: "red"
                 font.bold: false
                 font.pixelSize: 20
-                text: "x"
+                text: "X"
+            }
+
+            MouseArea {
+                id: deleteMousearea
+                anchors.fill: removeIcon
+                onClicked: {
+                    removeClicked()
+                }
             }
         }
-
-    }
-
-    MouseArea{
-        id: area
-        anchors.fill: parent
-        hoverEnabled: true
-        drag.target: _root
-
-        drag.onActiveChanged: _root.Drag.drop();
-
-        onClicked: (mouse) => {
-                       if(mouse.x >= removeIcon.x && mouse.x < (removeIcon.x + removeIcon.width)){
-                           removeClicked()
-                       }
-                       else{
-                           _root.activeStateChanged()
-                           descriptionContainer.state = descriptionContainer.state === "active" ?  "deActive" : "active"
-                       }}
     }
 
     Drag.active: area.drag.active
@@ -119,7 +119,7 @@ Rectangle {
             }
             PropertyChanges {
                 target: _root
-                color: Qt.lighter(style.primaryColorLight,1.5)
+                color: Qt.lighter(Style.primaryColorLight,1.5)
             }
             AnchorChanges {
                 target: _root
@@ -127,6 +127,5 @@ Rectangle {
                 anchors.verticalCenter: undefined
             }
         }
-
     ]
 }

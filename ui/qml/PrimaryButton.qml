@@ -7,9 +7,9 @@ Item {
     width: 180
     state: ""
 
-    property color btnColor : style.secondaryColorMain
-    property color btnHoveredColor: style.secondaryColorLight
-    property color fontColor : style.fontTextColor
+    property color btnColor : Style.secondaryColorMain
+    property color btnHoveredColor: Style.secondaryColorLight
+    property color fontColor : Style.fontTextColor
     property alias text: name.text
 
     signal clicked()
@@ -20,6 +20,7 @@ Item {
         width: _root.width
         color: _root.btnColor
         radius: 10
+
         Text {
             id: name
             anchors.centerIn: parent
@@ -27,6 +28,7 @@ Item {
             font.bold: true
             font.pixelSize: 20
         }
+
         MouseArea{
             anchors.fill: parent
             hoverEnabled: true
@@ -35,9 +37,8 @@ Item {
             onEntered: _root.state = "entered"
             onExited:  _root.state = ""
         }
-
-
     }
+
     states: [
         State {
             name: "entered"
@@ -47,6 +48,7 @@ Item {
             }
         }
     ]
+
     transitions: [
         Transition {
             from: "*"; to: "*"

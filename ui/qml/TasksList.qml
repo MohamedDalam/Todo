@@ -7,9 +7,11 @@ ListView{
     height: parent.height
     clip: true
 
+    property var todoModel;
+
     model: DelegateModel {
         id: delegatemodel
-        model: modelTodo
+        model: todoModel
         delegate: Item {
             id: delegateRoot
             width: tasksList.width
@@ -24,11 +26,11 @@ ListView{
                 width: parent.width
                 text: model.description
                 isActive: model.active
-                onActiveStateChanged: modelTodo.changeActiveState(delegateRoot.visualIndex)
-                onRemoveClicked: modelTodo.remove(model.index)
+                onActiveStateChanged: delegatemodel.model.changeActiveState(model.index)
+                onRemoveClicked: delegatemodel.model.remove(model.index)
                 dragParent: tasksList
-                listView: tasksList
             }
+
             DropArea {
                 id: dropArea
                 anchors.fill: parent
@@ -36,12 +38,11 @@ ListView{
                     delegatemodel.items.move((drag.source as TasksListDelegate).dropItemIndex, task.dropItemIndex)
                 }
                 onDropped: {
-                    modelTodo.swap((drag.source as TasksListDelegate).dropItemIndex, task.dropItemIndex);
+                    delegatemodel.model.swap((drag.source as TasksListDelegate).dropItemIndex, task.dropItemIndex);
                 }
             }
         }
     }
-
 
     add: Transition {
         NumberAnimation {
@@ -58,8 +59,7 @@ ListView{
     displaced: Transition {
         SequentialAnimation {
             PauseAnimation { duration: 100 }
-            NumberAnimation { properties: "y"; easing.type: Easing.OutQuad; duration: 75
-            }
+            NumberAnimation { properties: "y"; easing.type: Easing.OutQuad; duration: 75 }
         }
     }
     addDisplaced: Transition {
@@ -71,5 +71,4 @@ ListView{
     removeDisplaced: Transition {
         NumberAnimation { properties: "x, y"; duration: 100 }
     }
-
 }

@@ -1,4 +1,4 @@
-#include "include/model/modeltodo.h"
+#include "model/modeltodo.h"
 
 ModelTodo::ModelTodo(QObject *parent):
     QAbstractListModel(parent)

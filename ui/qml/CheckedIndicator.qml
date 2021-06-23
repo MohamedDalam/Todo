@@ -13,7 +13,7 @@ Item {
         radius:  checkedIndicator.width / 2
         color: "transparent"
         border.width: 1
-        border.color: style.primaryColorMain
+        border.color: Style.primaryColorMain
 
         MouseArea{
         anchors.fill: parent
