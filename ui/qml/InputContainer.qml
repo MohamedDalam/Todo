@@ -1,38 +1,43 @@
 import QtQuick 2.0
 
-Item {
+FocusScope {
     id: _root
-    implicitHeight: 40
+    implicitHeight: 30
     implicitWidth: 200
 
     property int _btnX: ((_root.width / 2) - (btnNewTask.width / 2))
+    property string inputText: inputRecord.text
 
-    signal append(string name)
+    signal append()
 
-    Keys.onEscapePressed : _root.state = "view"
-
-    state: "view"
     function acceptRecord() {
         if(_root.state === "add") {
-            _root.append(inputRecord.text)
+            _root.append()
             _root.state = "view"
         } else {
             _root.state = "add"
         }
     }
 
-    InputRecord{
+    state: "view"
+    Keys.onEscapePressed : _root.state = "view"
+
+    InputRecord {
         id: inputRecord
         anchors.leftMargin: 20
-        textFiledPlaceHolderText: "What is your next task?"
-        onEnterPressed: _root.acceptRecord()
+        placeholderText: "What is your next task?"
+        focus: true
+
+        onAccepted: _root.acceptRecord()
     }
 
-    PrimaryButton{
+    PrimaryButton {
         id: btnNewTask
         x: _root._btnX
         anchors.verticalCenter: parent.verticalCenter
+        height: parent.height
         text: "+ Add Task"
+
         onClicked: _root.acceptRecord()
     }
 
@@ -44,19 +49,23 @@ Item {
                 opacity: 0.0
                 textFiledWidth: 0
                 text: ""
-                focus: false
             }
-            PropertyChanges { target: btnNewTask; width: 180; height: 40; }
+            PropertyChanges { target: btnNewTask
+                width: 160
+            }
         },
         State {
             name: "add"
-            PropertyChanges { target: btnNewTask; text: "+"; width: 30; height: 30; x: _root.width - btnNewTask.width - 20; }
+            PropertyChanges { target: btnNewTask
+                text: "+"
+                width: 30
+                x: _root.width - btnNewTask.width - 20
+            }
             PropertyChanges {
                 target: inputRecord
                 opacity: 1.0
                 textFiledWidth: btnNewTask.x - 30
                 text: ""
-                focus: true
             }
         }
     ]

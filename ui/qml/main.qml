@@ -16,6 +16,7 @@ Window {
 
     ColumnLayout {
         id: listContainer
+        spacing: 5
         anchors.fill: parent
 
         TitleBar {
@@ -42,15 +43,18 @@ Window {
                 color: "lightGray"
                 font.pixelSize: 24
                 font.bold: true
-                visible: modelTodo.count === 0 ? true : false
+                visible: modelTodo.count === 0
             }
         }
 
         InputContainer {
+            id: inputContainer
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignBottom | Qt.AlignVCenter
             Layout.bottomMargin: parent.spacing
-            onAppend: modelTodo.append(true, name);
+            focus: true
+
+            onAppend: modelTodo.append(true, inputText);
         }
     }
 }

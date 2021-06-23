@@ -3,13 +3,8 @@ import QtQuick 2.0
 Item {
     id: _root
 
-    height: 40
-    width: 180
     state: ""
 
-    property color btnColor : Style.secondaryColorMain
-    property color btnHoveredColor: Style.secondaryColorLight
-    property color fontColor : Style.fontTextColor
     property alias text: name.text
 
     signal clicked()
@@ -18,13 +13,13 @@ Item {
         id: btnBack
         height: _root.height
         width: _root.width
-        color: _root.btnColor
+        color: Style.secondaryColorMain
         radius: 10
 
         Text {
             id: name
             anchors.centerIn: parent
-            color: _root.fontColor
+            color: Style.fontTextColor
             font.bold: true
             font.pixelSize: 20
         }
@@ -44,7 +39,7 @@ Item {
             name: "entered"
             PropertyChanges {
                 target: btnBack
-                color: _root.btnHoveredColor
+                color: Style.secondaryColorLight
             }
         }
     ]

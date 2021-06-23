@@ -2,33 +2,36 @@ import QtQuick 2.12
 
 ListView{
     id: tasksList
+
+    property var todoModel;
+
     implicitHeight: 100
     width: parent.width
     height: parent.height
     clip: true
-
-    property var todoModel;
 
     model: DelegateModel {
         id: delegatemodel
         model: todoModel
         delegate: Item {
             id: delegateRoot
+            property int dropItemIndex: DelegateModel.itemsIndex
+
             width: tasksList.width
             height: 40
-            property int dropItemIndex: DelegateModel.itemsIndex
 
             TasksListDelegate {
                 id: task
-                dropItemIndex: delegateRoot.dropItemIndex
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width
                 text: model.description
+                dropItemIndex: delegateRoot.dropItemIndex
                 isActive: model.active
+                dragParent: tasksList
+
                 onActiveStateChanged: delegatemodel.model.changeActiveState(model.index)
                 onRemoveClicked: delegatemodel.model.remove(model.index)
-                dragParent: tasksList
             }
 
             DropArea {
@@ -37,9 +40,7 @@ ListView{
                 onEntered: function(drag) {
                     delegatemodel.items.move((drag.source as TasksListDelegate).dropItemIndex, task.dropItemIndex)
                 }
-                onDropped: {
-                    delegatemodel.model.swap((drag.source as TasksListDelegate).dropItemIndex, task.dropItemIndex);
-                }
+                onDropped: delegatemodel.model.swap((drag.source as TasksListDelegate).dropItemIndex, task.dropItemIndex);
             }
         }
     }
@@ -53,22 +54,13 @@ ListView{
     remove: Transition {
         NumberAnimation {
             properties: "x"; from: 0; to: tasksList.width;
-            duration: 250; easing.type: Easing.InCirc
+            duration: 200; easing.type: Easing.InCirc
         }
     }
     displaced: Transition {
         SequentialAnimation {
-            PauseAnimation { duration: 100 }
+            PauseAnimation { duration: 150 }
             NumberAnimation { properties: "y"; easing.type: Easing.OutQuad; duration: 75 }
         }
-    }
-    addDisplaced: Transition {
-        NumberAnimation {properties: "x, y"; duration: 100}
-    }
-    moveDisplaced: Transition {
-        NumberAnimation { properties: "x, y"; duration: 100 }
-    }
-    removeDisplaced: Transition {
-        NumberAnimation { properties: "x, y"; duration: 100 }
     }
 }

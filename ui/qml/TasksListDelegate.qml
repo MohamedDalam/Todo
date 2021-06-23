@@ -81,27 +81,28 @@ Rectangle {
         }
 
         Item {
-            id: removeIcon
+            id: removeIconBack
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: parent.height
             height: parent.height
             visible: area.containsMouse && !area.drag.active
+
             Text {
-                id: name
+                id: removeIcon
                 anchors.centerIn: parent
                 verticalAlignment: Text.AlignVCenter
-                color: "red"
-                font.bold: false
-                font.pixelSize: 20
+                color: deleteMousearea.containsMouse ? Style.secondaryColorLight : Style.secondaryColorMain
+                font.bold: true
+                font.pixelSize: 16
                 text: "X"
             }
 
             MouseArea {
                 id: deleteMousearea
-                anchors.fill: removeIcon
-                onClicked: {
-                    removeClicked()
-                }
+                anchors.fill: removeIconBack
+                hoverEnabled: true
+
+                onClicked: removeClicked()
             }
         }
     }
