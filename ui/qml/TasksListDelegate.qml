@@ -85,7 +85,7 @@ Rectangle {
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: parent.height
             height: parent.height
-            visible: area.containsMouse && !area.drag.active
+            visible: (area.containsMouse || deleteMousearea.containsMouse) && !area.drag.active
 
             Text {
                 id: removeIcon
